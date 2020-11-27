@@ -26,3 +26,12 @@ rules:
   semi: [ error, always ]
   space-infix-ops: [ error ]
   strict: [ error, "global" ]
+  no-shadow: error
+  node/no-extraneous-require: [ error, { allowModules: [ verror ] }]
+
+overrides:
+  - files: [ "scripts/**" ]
+    rules:
+      node/shebang: [ off ]
+      no-console: [ off ]
+      node/no-unpublished-require: [ off ]
