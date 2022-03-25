@@ -1,6 +1,6 @@
 # Axios Verror
 
-Enhance Axios request errors using VError.
+Enhance [Axios] request errors using [VError].
 
 
 ## Installation
@@ -50,6 +50,18 @@ catch (e) {
 }
 ```
 
+## VError Info
+
+Structured details about the error can be extracted with
+`VError.info(err).axios`. The following properties will be available:
+
+| Name    | Type   | Description                                                                  |
+| -       | -      | -                                                                            |
+| status  | Number | HTTP response status code.                                                   |
+| method  | String | HTTP request method (GET, POST etc).                                         |
+| url     | String | HTTP request URL. Query params not included when defined as Axios "params".  |
+| message | String | Extracted HTTP response message. See `extractMessage()` option to customize. |
+
 
 ## Error Messages
 
@@ -69,7 +81,38 @@ message extracted from the response. Example enhanced message:
 [400] POST https://host/ (invalid request): Request failed with status code 400
 ```
 
+## Customizing
 
+Create a modified instance of AxiosVError with `AxiosVError.configure()`:
+
+```javascript
+const axiosVError = AxiosVError.configure({
+  extractMessage: res => res?.data?.error_code
+});
+axios.request(args).catch(axiosVError.enhance);
+```
+
+AxiosVError instances can be reused.
+
+
+### Options
+
+The following options are available for configuring AxiosVError behavior.
+
+#### extractMessage(res)
+
+A function which extracts the error message from the axios response. By
+default, the message will be attempted to be taken from the parsed Axios
+response body as either `res.data.message` or `res.data.error.message`.
+
+#### formatSummary({ status, method, url, message })
+
+A function which generates the formatted error message. By
+default, the message will be formatted like:
+
+```javascript
+`[${status}] ${method} ${url} (${message})`
+```
 
 
 ## History
@@ -84,3 +127,5 @@ This software is licensed under Apache-2.0 License. Please see [LICENSE](/LICENS
 
 
 [Centrapay]: https://centrapay.com/
+[Axios]: https://axios-http.com/
+[VError]: https://github.com/joyent/node-verror
