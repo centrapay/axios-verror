@@ -1,6 +1,6 @@
 # Axios Verror
 
-Enhance Axios request errors using VError.
+Enhance [Axios] request errors using [VError].
 
 
 ## Installation
@@ -49,6 +49,18 @@ catch (e) {
   }
 }
 ```
+
+## VError Info
+
+Structured details about the error can be extracted with
+`VError.info(err).axios`. The following properties will be available:
+
+| Name    | Type   | Description                                                                  |
+| -       | -      | -                                                                            |
+| status  | Number | HTTP response status code.                                                   |
+| method  | String | HTTP request method (GET, POST etc).                                         |
+| url     | String | HTTP request URL. Query params not included when defined as Axios "params".  |
+| message | String | Extracted HTTP response message. See `extractMessage()` option to customize. |
 
 
 ## Error Messages
@@ -115,3 +127,5 @@ This software is licensed under Apache-2.0 License. Please see [LICENSE](/LICENS
 
 
 [Centrapay]: https://centrapay.com/
+[Axios]: https://axios-http.com/
+[VError]: https://github.com/joyent/node-verror
