@@ -69,7 +69,38 @@ message extracted from the response. Example enhanced message:
 [400] POST https://host/ (invalid request): Request failed with status code 400
 ```
 
+## Customizing
 
+Create a modified instance of AxiosVError with `AxiosVError.configure()`:
+
+```javascript
+const axiosVError = AxiosVError.configure({
+  extractMessage: res => res?.data?.error_code
+});
+axios.request(args).catch(axiosVError.enhance);
+```
+
+AxiosVError instances can be reused.
+
+
+### Options
+
+The following options are available for configuring AxiosVError behavior.
+
+#### extractMessage(res)
+
+A function which extracts the error message from the axios response. By
+default, the message will be attempted to be taken from the parsed Axios
+response body as either `res.data.message` or `res.data.error.message`.
+
+#### formatSummary({ status, method, url, message })
+
+A function which generates the formatted error message. By
+default, the message will be formatted like:
+
+```javascript
+`[${status}] ${method} ${url} (${message})`
+```
 
 
 ## History
