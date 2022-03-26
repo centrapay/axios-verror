@@ -30,11 +30,12 @@ const AxiosVError = require('@centrapay/axios-verror');
 const axios = require('axios');
 
 async function callApi(data) {
-await axios.request({
-  url: 'http://myhost/',
-  method: 'POST',
-  data,
-}).catch(AxiosVError.enhance);
+  await axios.request({
+    url: 'http://myhost/',
+    method: 'POST',
+    data,
+  }).catch(AxiosVError.enhance);
+}
 ```
 
 ## Handling Enhanced Errors
@@ -53,14 +54,21 @@ catch (e) {
 ## VError Info
 
 Structured details about the error can be extracted with
-`VError.info(err).axios`. The following properties will be available:
+`VError.info(err).axios`. An object with the following properties will be
+provided:
 
-| Name    | Type   | Description                                                                  |
-| -       | -      | -                                                                            |
-| status  | Number | HTTP response status code.                                                   |
-| method  | String | HTTP request method (GET, POST etc).                                         |
-| url     | String | HTTP request URL. Query params not included when defined as Axios "params".  |
-| message | String | Extracted HTTP response message. See `extractMessage()` option to customize. |
+| Name    | Type              | Description                                                                  |
+| -       | -                 | -                                                                            |
+| method  | String            | HTTP request method (GET, POST etc).                                         |
+| url     | String            | HTTP request URL. Query params not included when defined as Axios "params".  |
+| status  | Number (Optional) | HTTP response status code.                                                   |
+| message | String (Optional) | Extracted HTTP response message. See `extractMessage()` option to customize. |
+| res     | Object (Optional) | Raw Axios response object.
+
+Only the requested method and URL are guaranteed to be present. Other
+properties require a response. Whether a response is available depends on
+the underlying error. For example, if there is a network connectivity issue
+then there will not be an HTTP response available.
 
 
 ## Error Messages

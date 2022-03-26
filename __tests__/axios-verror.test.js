@@ -42,6 +42,7 @@ describe('enhance', () => {
     );
     expect(VError.info(caught)).toEqual({
       axios: {
+        res: caught.jse_cause.response,
         message: 'invalid request',
         method: 'POST',
         status: 400,

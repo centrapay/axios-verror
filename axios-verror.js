@@ -50,6 +50,7 @@ function enhanceError(err) {
     cause: err,
     info: {
       axios: {
+        res,
         method,
         url,
         status,
