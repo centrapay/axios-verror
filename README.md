@@ -57,13 +57,13 @@ Structured details about the error can be extracted with
 `VError.info(err).axios`. An object with the following properties will be
 provided:
 
-| Name    | Type              | Description                                                                  |
-| -       | -                 | -                                                                            |
-| method  | String            | HTTP request method (GET, POST etc).                                         |
-| url     | String            | HTTP request URL. Query params not included when defined as Axios "params".  |
-| status  | Number (Optional) | HTTP response status code.                                                   |
-| message | String (Optional) | Extracted HTTP response message. See `extractMessage()` option to customize. |
-| res     | Object (Optional) | Raw Axios response object.
+| Name    | Type                 | Description                                                                  |
+| -       | -                    | -                                                                            |
+| method  | String               | HTTP request method (GET, POST etc).                                         |
+| url     | String               | HTTP request URL. Query params not included when defined as Axios "params".  |
+| status  | Number *(Optional)* | HTTP response status code.                                                   |
+| message | String *(Optional)* | Extracted HTTP response message. See `extractMessage()` option to customize. |
+| res     | Object *(Optional)* | Raw Axios response object. See [Axios Response Schema].
 
 Only the requested method and URL are guaranteed to be present. Other
 properties require a response. Whether a response is available depends on
@@ -137,3 +137,4 @@ This software is licensed under Apache-2.0 License. Please see [LICENSE](/LICENS
 [Centrapay]: https://centrapay.com/
 [Axios]: https://axios-http.com/
 [VError]: https://github.com/joyent/node-verror
+[Axios Response Schema]: https://axios-http.com/docs/res_schema
