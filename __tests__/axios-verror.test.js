@@ -42,8 +42,38 @@ describe('enhance', () => {
     );
     expect(VError.info(caught)).toEqual({
       axios: {
+        res: caught.jse_cause.response,
         message: 'invalid request',
         method: 'POST',
+        status: 400,
+        url: 'http://nock/',
+      }
+    });
+  });
+
+  test('query params', async () => {
+    nock('http://nock')
+      .get('/')
+      .query({ foo: 1 })
+      .reply(400, { message: 'invalid request' });
+    let caught = null;
+    try {
+      await axios.request({
+        url: 'http://nock/',
+        method: 'GET',
+        params: { foo: 1 },
+      }).catch(AxiosVError.enhance);
+    } catch (e) {
+      caught = e;
+    }
+    expect(caught.message).toEqual(
+      '[400] GET http://nock/ (invalid request): Request failed with status code 400'
+    );
+    expect(VError.info(caught)).toEqual({
+      axios: {
+        res: caught.jse_cause.response,
+        message: 'invalid request',
+        method: 'GET',
         status: 400,
         url: 'http://nock/',
       }
