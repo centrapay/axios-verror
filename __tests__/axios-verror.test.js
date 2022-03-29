@@ -80,4 +80,63 @@ describe('enhance', () => {
     });
   });
 
+  test('only base url', async () => {
+    nock('http://nock')
+      .get('/')
+      .reply(400, { message: 'invalid request' });
+    let caught = null;
+    const client = axios.create({
+      baseURL: 'http://nock',
+    });
+    try {
+      await client.request({
+        method: 'GET',
+      }).catch(AxiosVError.enhance);
+    } catch (e) {
+      caught = e;
+    }
+    expect(caught.message).toEqual(
+      '[400] GET http://nock/ (invalid request): Request failed with status code 400'
+    );
+    expect(VError.info(caught)).toEqual({
+      axios: {
+        res: caught.jse_cause.response,
+        message: 'invalid request',
+        method: 'GET',
+        status: 400,
+        url: 'http://nock/',
+      }
+    });
+  });
+
+  test('base url and path', async () => {
+    nock('http://nock')
+      .get('/foo')
+      .reply(400, { message: 'invalid request' });
+    let caught = null;
+    const client = axios.create({
+      baseURL: 'http://nock',
+    });
+    try {
+      await client.request({
+        url: 'foo',
+        method: 'GET',
+      }).catch(AxiosVError.enhance);
+    } catch (e) {
+      caught = e;
+    }
+    expect(caught.message).toEqual(
+      '[400] GET http://nock/foo (invalid request): Request failed with status code 400'
+    );
+    expect(VError.info(caught)).toEqual({
+      axios: {
+        res: caught.jse_cause.response,
+        message: 'invalid request',
+        method: 'GET',
+        status: 400,
+        url: 'http://nock/foo',
+      }
+    });
+  });
+
 });

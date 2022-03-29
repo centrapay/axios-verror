@@ -29,6 +29,21 @@ function extractMessageDefault(res) {
   return res?.data?.message || res?.data?.error?.message;
 }
 
+function trimTrailingSlash(s = '') {
+  return s.replace(/\/$/,'');
+}
+
+function trimLeadingSlash(s = '') {
+  return s.replace(/^\//, '');
+}
+
+function formatUrl(config) {
+  if(config.baseURL) {
+    return [ trimTrailingSlash(config.baseURL), trimLeadingSlash(config.url) ].join('/');
+  }
+  return config.url;
+}
+
 function enhanceError(err) {
   const config = err.config;
   if (!config) {
@@ -36,7 +51,7 @@ function enhanceError(err) {
   }
   const res = err.response;
   const method = (config.method || config.type || 'GET').toUpperCase();
-  const url = `${(config.baseURL || '')}${config.url}`;
+  const url = formatUrl(config);
   const status = res?.status;
   const message = this.extractMessage(res);
   const errorMessage = this.formatSummary({
