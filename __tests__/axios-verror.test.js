@@ -47,6 +47,9 @@ describe('enhance', () => {
         method: 'POST',
         status: 400,
         url: 'http://nock/',
+        data: {
+          message: 'invalid request',
+        },
       }
     });
   });
@@ -76,6 +79,9 @@ describe('enhance', () => {
         method: 'GET',
         status: 400,
         url: 'http://nock/',
+        data: {
+          message: 'invalid request',
+        },
       }
     });
   });
@@ -105,6 +111,9 @@ describe('enhance', () => {
         method: 'GET',
         status: 400,
         url: 'http://nock/',
+        data: {
+          message: 'invalid request',
+        },
       }
     });
   });
@@ -135,8 +144,40 @@ describe('enhance', () => {
         method: 'GET',
         status: 400,
         url: 'http://nock/foo',
+        data: {
+          message: 'invalid request',
+        },
       }
     });
   });
 
+  test('no message body', async () => {
+    nock('http://nock')
+      .post('/')
+      .reply(400, { reason: 'invalid request' });
+    let caught = null;
+    try {
+      await axios.request({
+        url: 'http://nock/',
+        method: 'POST',
+        data: { param: 'foo' },
+      }).catch(AxiosVError.enhance);
+    } catch (e) {
+      caught = e;
+    }
+    expect(caught.message).toEqual(
+      '[400] POST http://nock/: Request failed with status code 400'
+    );
+    expect(VError.info(caught)).toEqual({
+      axios: {
+        res: caught.jse_cause.response,
+        method: 'POST',
+        status: 400,
+        url: 'http://nock/',
+        data: {
+          reason: 'invalid request',
+        },
+      }
+    });
+  });
 });
