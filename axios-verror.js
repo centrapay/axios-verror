@@ -30,7 +30,7 @@ function extractMessageDefault(res) {
 }
 
 function trimTrailingSlash(s = '') {
-  return s.replace(/\/$/,'');
+  return s.replace(/\/$/, '');
 }
 
 function trimLeadingSlash(s = '') {
@@ -38,8 +38,8 @@ function trimLeadingSlash(s = '') {
 }
 
 function formatUrl(config) {
-  if(config.baseURL) {
-    return [ trimTrailingSlash(config.baseURL), trimLeadingSlash(config.url) ].join('/');
+  if (config.baseURL) {
+    return [trimTrailingSlash(config.baseURL), trimLeadingSlash(config.url)].join('/');
   }
   return config.url;
 }
@@ -70,6 +70,14 @@ function enhanceError(err) {
         url,
         status,
         message,
+        toJSON() {
+          return {
+            method,
+            url,
+            status,
+            message,
+          };
+        }
       },
     },
   }, errorMessage);

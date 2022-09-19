@@ -41,13 +41,13 @@ describe('enhance', () => {
       '[400] POST http://nock/ (invalid request): Request failed with status code 400'
     );
     expect(VError.info(caught)).toEqual({
-      axios: {
+      axios: expect.objectContaining({
         res: caught.jse_cause.response,
         message: 'invalid request',
         method: 'POST',
         status: 400,
         url: 'http://nock/',
-      }
+      })
     });
   });
 
@@ -70,13 +70,13 @@ describe('enhance', () => {
       '[400] GET http://nock/ (invalid request): Request failed with status code 400'
     );
     expect(VError.info(caught)).toEqual({
-      axios: {
+      axios: expect.objectContaining({
         res: caught.jse_cause.response,
         message: 'invalid request',
         method: 'GET',
         status: 400,
         url: 'http://nock/',
-      }
+      })
     });
   });
 
@@ -99,13 +99,13 @@ describe('enhance', () => {
       '[400] GET http://nock/ (invalid request): Request failed with status code 400'
     );
     expect(VError.info(caught)).toEqual({
-      axios: {
+      axios: expect.objectContaining({
         res: caught.jse_cause.response,
         message: 'invalid request',
         method: 'GET',
         status: 400,
         url: 'http://nock/',
-      }
+      })
     });
   });
 
@@ -129,14 +129,42 @@ describe('enhance', () => {
       '[400] GET http://nock/foo (invalid request): Request failed with status code 400'
     );
     expect(VError.info(caught)).toEqual({
-      axios: {
+      axios: expect.objectContaining({
         res: caught.jse_cause.response,
         message: 'invalid request',
         method: 'GET',
         status: 400,
         url: 'http://nock/foo',
-      }
+      })
     });
+  });
+
+  test('serialize verror', async () => {
+    nock('http://nock')
+      .get('/foo')
+      .reply(400, { message: 'invalid request' });
+    let caught = null;
+    const client = axios.create({
+      baseURL: 'http://nock',
+    });
+    try {
+      await client.request({
+        url: 'foo',
+        method: 'GET',
+      }).catch(AxiosVError.enhance);
+    } catch (e) {
+      caught = e;
+    }
+    expect(JSON.stringify(VError.info(caught))).toEqual(
+      JSON.stringify({
+        axios: {
+          method: 'GET',
+          url: 'http://nock/foo',
+          status: 400,
+          message: 'invalid request',
+        }
+      })
+    );
   });
 
 });
