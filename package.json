@@ -21,10 +21,10 @@
   "homepage": "https://github.com/centrapay/axios-verror",
   "repository": "https://github.com/centrapay/axios-verror.git",
   "devDependencies": {
-    "axios": "^1.6.4",
-    "eslint": "^8.11.0",
+    "axios": "^1.6.8",
+    "eslint": "^8.44.0",
     "eslint-plugin-node": "^11.1.0",
-    "jest": "^29.4.2",
+    "jest": "^29.7.0",
     "nock": "^13.2.4",
     "verror": "^1.10.1"
   },
