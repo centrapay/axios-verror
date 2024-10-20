@@ -1,6 +1,6 @@
 {
   "name": "@centrapay/axios-verror",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Enhance Axios request errors using VError",
   "main": "axios-verror.js",
   "scripts": {
