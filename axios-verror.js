@@ -53,6 +53,7 @@ function enhanceError(err) {
   const method = (config.method || config.type || 'GET').toUpperCase();
   const url = formatUrl(config);
   const status = res?.status;
+  const code = err.code;
   const message = this.extractMessage(res);
   const errorMessage = this.formatSummary({
     url,
@@ -70,12 +71,14 @@ function enhanceError(err) {
         url,
         status,
         message,
+        code,
         toJSON() {
           return {
             method,
             url,
             status,
             message,
+            code,
           };
         }
       },

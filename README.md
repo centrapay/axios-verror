@@ -63,6 +63,7 @@ provided:
 | url     | String               | HTTP request URL. Query params not included when defined as Axios "params".  |
 | status  | Number *(Optional)* | HTTP response status code.                                                   |
 | message | String *(Optional)* | Extracted HTTP response message. See `extractMessage()` option to customize. |
+| code    | String *(Optional)* | Error code from axios or underlying system (e.g., ECONNRESET, ERR_BAD_REQUEST). |
 | res     | Object *(Optional)* | Raw Axios response object. See [Axios Response Schema].
 
 Only the requested method and URL are guaranteed to be present. Other
