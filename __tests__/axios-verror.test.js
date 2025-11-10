@@ -162,6 +162,7 @@ describe('enhance', () => {
           url: 'http://nock/foo',
           status: 400,
           message: 'invalid request',
+          code: 'ERR_BAD_REQUEST',
         }
       })
     );
