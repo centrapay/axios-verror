@@ -55,12 +55,17 @@ function enhanceError(err) {
   const status = res?.status;
   const code = err.code;
   const message = this.extractMessage(res);
-  const errorMessage = this.formatSummary({
+  const ctx = {
+    err,
+    config,
+    res,
     url,
     method,
     status,
+    code,
     message,
-  });
+  };
+  const errorMessage = this.formatSummary(ctx);
   throw new VError({
     name: 'HttpRequestFailed',
     cause: err,
@@ -97,6 +102,8 @@ function configure(opts = {}) {
 const AxiosVError = {
   configure,
   enhance: configure().enhance,
+  formatSummary: formatSummaryDefault,
+  formatUrl,
 };
 
 module.exports = AxiosVError;
